@@ -1,11 +1,6 @@
-from vectorstore.retriever import search
-from app.llm import generate_response
+import pickle
 
-query = "Java Developer"
+with open("vectorstore/faiss_index/documents.pkl", "rb") as f:
+    docs = pickle.load(f)
 
-results = search(query, top_k=5)
-
-reply = generate_response(query, results)
-
-print("\n===== LLM RESPONSE =====\n")
-print(reply)
+print(docs[0])

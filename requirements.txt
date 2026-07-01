@@ -1,31 +1,28 @@
-fastapi
-uvicorn
-langchain
-langchain-community
-langchain-groq
-langchain-huggingface
-langchain-text-splitters
+fastapi==0.115.12
+uvicorn[standard]==0.34.2
 
-faiss-cpu
+langchain==0.3.26
+langchain-core==0.3.68
+langchain-community==0.3.27
+langchain-groq==0.3.5
+langchain-huggingface==0.3.0
+langchain-text-splitters==0.3.8
 
-sentence-transformers
+sentence-transformers==3.4.1
+transformers==4.49.0
+torch==2.6.0
 
-beautifulsoup4
+faiss-cpu==1.10.0
 
-requests
+numpy==1.26.4
+pandas==2.2.3
 
-playwright
+beautifulsoup4==4.13.3
+lxml==5.3.1
+requests==2.32.3
+playwright==1.51.0
 
-lxml
-
-pandas
-
-numpy
-
-python-dotenv
-
-pydantic
-
-tqdm
-
-httpx
+python-dotenv==1.0.1
+pydantic==2.10.6
+httpx==0.28.1
+tqdm==4.67.1

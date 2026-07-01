@@ -1,6 +1,7 @@
 from app.planner import classify_intent
 from app.llm import generate_response
 from vectorstore.retriever import search
+from app.comparison import compare_assessments
 
 
 def handle_messages(messages):
@@ -12,7 +13,6 @@ def handle_messages(messages):
     # Collect all user messages
     # -----------------------------------------------------
     user_messages = []
-
     latest_query = ""
 
     for msg in messages:
@@ -26,7 +26,20 @@ def handle_messages(messages):
     # -----------------------------------------------------
     # Detect intent
     # -----------------------------------------------------
-    intent = classify_intent(latest_query)
+    lower_query = latest_query.lower()
+
+    if any(x in lower_query for x in [
+    "compare",
+    "comparison",
+    "difference",
+    "differences",
+    "vs",
+    "versus"
+    ]):
+     intent = "compare"
+    else:
+        
+        intent = classify_intent(latest_query)
 
     # -----------------------------------------------------
     # Blocked Queries
@@ -62,6 +75,10 @@ def handle_messages(messages):
 
         results = search(search_query, top_k=5)
 
+        print("\n================ SEARCH RESULTS ================\n")
+        for r in results:
+            print(r)
+
         if not results:
             return {
                 "reply": "Sorry, I couldn't find any relevant SHL assessments.",
@@ -91,7 +108,6 @@ def handle_messages(messages):
     # -----------------------------------------------------
     if intent == "refine":
 
-        # Reuse all previous user requests
         results = search(search_query, top_k=5)
 
         if not results:
@@ -119,11 +135,14 @@ def handle_messages(messages):
         }
 
     # -----------------------------------------------------
-    # Comparison (Next Step)
+    # Comparison
     # -----------------------------------------------------
     if intent == "compare":
+
+        comparison = compare_assessments(search_query)
+
         return {
-            "reply": "Comparison feature is under development.",
+            "reply": comparison,
             "recommendations": [],
             "end_of_conversation": False
         }
